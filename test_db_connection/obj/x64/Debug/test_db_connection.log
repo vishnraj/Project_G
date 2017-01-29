@@ -1,0 +1,30 @@
+﻿  Cleaning remote project directory
+  Validating architecture
+  Validating sources
+  Copying sources remotely
+  Starting remote build
+  Compiling sources:
+  BigintColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\BigintColumn.cpp(43,68): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  BoolColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\BoolColumn.cpp(36,40): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  Column.cpp
+  Database.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.cpp(81,24): warning : conversion to ‘SQLSMALLINT {aka short int}’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.cpp(159,41): warning : conversion to ‘int’ from ‘long int’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.cpp(161,49): warning : conversion to ‘int’ from ‘long unsigned int’ may alter its value [-Wconversion]
+  DoubleColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\DoubleColumn.cpp(43,67): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  Exception.cpp
+  IntColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\IntColumn.cpp(47,68): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  LongColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\LongColumn.cpp(43,65): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  Query.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Query.cpp(166,80): warning : conversion to ‘SQLRETURN {aka short int}’ from ‘long int’ may alter its value [-Wconversion]
+  ScopedTransaction.cpp
+  StringColumn.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\StringColumn.cpp(46,67): warning : conversion to ‘SQLUSMALLINT {aka short unsigned int}’ from ‘int’ may alter its value [-Wconversion]
+  test_db_connection.cpp
+  Linking objects
+  test_db_connection.vcxproj -> C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\test_db_connection\bin\x64\Debug\test_db_connection.out
