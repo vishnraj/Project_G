@@ -1,0 +1,9 @@
+﻿  Cleaning remote project directory
+  Validating architecture
+  Validating sources
+  Copying sources remotely
+  Starting remote build
+  Compiling sources:
+  test_http_connection.cpp
+  Linking objects
+  test_http_connection.vcxproj -> C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\test_http_connection\bin\x64\Debug\test_http_connection.out

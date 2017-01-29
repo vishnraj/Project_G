@@ -1,0 +1,1 @@
+g++ -o "/home/ec2-user/projects/ProjectGrocery/tests/test_http_connection/bin/x64/Debug/test_http_connection.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack "/home/ec2-user/projects/ProjectGrocery/tests/test_http_connection/obj/x64/Debug/test_http_connection.o"
