@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #define MYPORT "8037"  // the port users will be connecting to
 #define BACKLOG 1     // how many pending connections queue will hold
@@ -75,20 +76,17 @@ int main(int argc, char *argv[])
 			std::string request(buffer, ret);
 			std::cout << request << '\n';
 
-			const char * response = "Hello, World! - From test_http_connection.\n";
-			ssize_t length = strlen(response);
-			ret = send(new_fd, response, length, 0);
+			std::string greeting("<html>\r\n<body>\r\nHello, World! - From test_http_connection.\r\n</body>\r\n</html>\r\n");
+			std::ostringstream response;
+			response << "HTTP/1.0 200 OK\r\nContent-Length: " << greeting.length() << "\r\nContent-Type: text/html\r\n\r\n" << greeting;
+			ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
 			if (ret == -1) {
 				std::cout << "Failed to send." << std::endl;
 				return 1;
 			}
 
-			std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << length << " bytes." << std::endl;
-
-			std::cout << "Closing current connection.\n" << a_bunch_of_dashes << std::endl;
-			close(new_fd);
-
-			closed = true;
+			std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << response.str().length() << " bytes.\n";
+			std::cout << "Response:\n" << greeting << std::endl;
 		} else if (ret == 0) {
 			std::cout << "Client closed connection. Terminating connection.\n" << a_bunch_of_dashes << std::endl;
 			close(new_fd);
@@ -99,22 +97,6 @@ int main(int argc, char *argv[])
 		}
 
 		if (closed) {
-			/*
-			if (bind(sockfd, res->ai_addr, res->ai_addrlen) == -1) {
-				int yes = 1;
-				if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof yes) == -1) {
-					std::cout << "Failed to release socket." << std::endl;
-					return 1;
-				}
-
-				if (bind(sockfd, res->ai_addr, res->ai_addrlen) == -1) {
-					std::cout << "Still failed to bind after seemingly succesfully releasing the socket." << std::endl;
-				}
-			}
-		
-			std::cout << "Bound.\n";
-			*/
-
 			if (listen(sockfd, BACKLOG) == -1) {
 				std::cout << "Failed to listen." << std::endl;
 				return 1;
