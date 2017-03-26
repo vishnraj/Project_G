@@ -1,0 +1,1 @@
+g++ -o "/home/ec2-user/projects/ProjectGrocery/load_into_database/bin/x64/Debug/load_into_database.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack "/home/ec2-user/projects/ProjectGrocery/load_into_database/obj/x64/Debug/main.o"

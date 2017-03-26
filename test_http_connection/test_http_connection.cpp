@@ -19,10 +19,32 @@
 
 const std::string a_bunch_of_dashes("----------------------------\n");
 
+int instantiate_connection(int & sock_fd) {
+	struct sockaddr_storage their_addr;
+	if (listen(sock_fd, BACKLOG) == -1) {
+		std::cout << "Failed to listen." << std::endl;
+		return 1;
+	}
+
+	std::cout << "Listening for connection.\n";
+
+	// now accept an incoming connection:
+
+	socklen_t addr_size = sizeof their_addr;
+	int new_fd = accept(sock_fd, (struct sockaddr *)&their_addr, &addr_size);
+
+	if (new_fd == -1) {
+		std::cout << "Failed to accept." << std::endl;
+		return -1;
+	}
+
+	std::cout << "Accepting. Closing connection to listening socket.\n";
+
+	return new_fd;
+}
+
 int main(int argc, char *argv[])
 {
-	struct sockaddr_storage their_addr;
-	socklen_t addr_size;
 	struct addrinfo hints, *res;
 	int sockfd, new_fd;
 
@@ -48,24 +70,10 @@ int main(int argc, char *argv[])
 
 	std::cout << "Bound.\n";
 
-	if (listen(sockfd, BACKLOG) == -1) {
-		std::cout << "Failed to listen." << std::endl;
-		return 1;
-	}
-
-	std::cout << "Listening for connection.\n";
-
-	// now accept an incoming connection:
-
-	addr_size = sizeof their_addr;
-	new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size);
-
+	new_fd = instantiate_connection(sockfd);
 	if (new_fd == -1) {
-		std::cout << "Failed to accept." << std::endl;
 		return 1;
 	}
-
-	std::cout << "Accepting. Closing connection to listening socket.\n";
 
 	bool closed = false;
 	while (true) {
@@ -97,25 +105,10 @@ int main(int argc, char *argv[])
 		}
 
 		if (closed) {
-			if (listen(sockfd, BACKLOG) == -1) {
-				std::cout << "Failed to listen." << std::endl;
-				return 1;
-			}
-
-			std::cout << "Listening for connection.\n";
-
-			// now accept an incoming connection:
-
-			addr_size = sizeof their_addr;
-			new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size);
-
+			new_fd = instantiate_connection(sockfd);
 			if (new_fd == -1) {
-				std::cout << "Failed to accept." << std::endl;
 				return 1;
 			}
-
-			std::cout << "Accepting. Closing connection to listening socket.\n";
-
 			closed = false;
 		}
 	}
