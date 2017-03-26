@@ -63,17 +63,6 @@ int instantiate_connection(int & sock_fd) {
 	return new_fd;
 }
 
-void read_aisle_info(std::string & aisle_info, std::istringstream & buffer) {
-	std::string line;
-	while (std::getline(buffer, line)) {
-		if (std::isspace(line[0]) == 0) {
-			aisle_info += line + '\n';
-		} else {
-			break;
-		}
-	}
-}
-
 void setup(struct addrinfo & hints, struct addrinfo * res, int & sockfd, int & new_fd) {
 	// !! don't forget your error checking for these calls !!
 
@@ -124,7 +113,7 @@ void parse_csv(const std::string & aisle_info) {
 		std::size_t len = pos - start_pos;
 		bool more_columns = true;
 		while (more_columns) {
-			if (line[start_pos] != '\0' && line[start_pos] != ',') {
+			if (std::isspace(line[start_pos]) == 0 && line[start_pos] != '\0' && line[start_pos] != ',') {
 				std::string item = line.substr(start_pos, len);
 
 				G_aisles[i].push_back(item);
@@ -146,6 +135,17 @@ void load_to_db(const std::string & aisle_info, const std::string & store_name) 
 	parse_csv(aisle_info);
 
 	// takes the current aisle_info vector and loads it into the database
+}
+
+void read_aisle_info(std::string & aisle_info, std::istringstream & buffer) {
+	std::string line;
+	while (std::getline(buffer, line)) {
+		if (std::isspace(line[0]) == 0) {
+			aisle_info += line + '\n';
+		} else {
+			break;
+		}
+	}
 }
 
 std::string get_store_name(std::string filename) {
@@ -184,7 +184,8 @@ void handle_request(ssize_t & ret, char * buffer, bool closed, int & new_fd, int
 
 		load_to_db(aisle_info, store_name);
 		std::ostringstream greeting;
-		greeting << "<html>\r\n<body>\r\nLoading aisle data for:\n" << store_name << ":\n\n" << format_aisles_output() << "\r\n</body>\r\n</html>\r\n";
+		greeting << "<html>\r\n<body>\r\nAisle data for " << store_name << ":\n\n" << format_aisles_output() << "\r\n</body>\r\n</html>\r\n";
+		G_aisles.clear();
 		std::ostringstream response;
 		response << "HTTP/1.0 200 OK\r\nContent-Length: " << greeting.str().length() << "\r\nContent-Type: text/html\r\n\r\n" << greeting.str();
 		ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
