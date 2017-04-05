@@ -22,6 +22,9 @@
 const std::string a_bunch_of_dashes("----------------------------\n");
 
 std::vector < std::vector < std::string > > G_aisles;
+std::string G_postal_code;
+std::string G_store_name;
+bool can_insert = false;
 
 std::string format_aisles_output() {
 	int aisle_num = 1;
@@ -131,10 +134,38 @@ void parse_csv(const std::string & aisle_info) {
 	}
 }
 
-void load_to_db(const std::string & aisle_info, const std::string & store_name) {
-	parse_csv(aisle_info);
+void send_fail_response(int new_fd, std::string message) {
+	std::ostringstream response;
+	response << "HTTP/1.0 400 OK\r\nContent-Length: " << message.size() << " \r\nContent-Type: text/html\r\n\r\n" << message;
+	int ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
+	if (ret == -1) {
+		std::cout << "Failed to send." << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
-	// takes the current aisle_info vector and loads it into the database
+	std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << response.str().length() << " bytes.\n";
+	std::cout << "Response:\n" << message << std::endl;
+}
+
+void send_success_response(int new_fd, std::string message) {
+	std::ostringstream response;
+	response << "HTTP/1.0 200 OK\r\nContent-Length: " << message.size() << "\r\nContent-Type: text/html\r\n\r\n" << message;
+	int ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
+	if (ret == -1) {
+		std::cout << "Failed to send." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << response.str().length() << " bytes.\n";
+	std::cout << "Response:\n" << message << std::endl;
+}
+
+void load_to_db() {
+	// loading operations
+	
+	G_aisles.clear();
+	G_postal_code.clear();
+	G_store_name.clear();
 }
 
 void read_aisle_info(std::string & aisle_info, std::istringstream & buffer) {
@@ -148,18 +179,18 @@ void read_aisle_info(std::string & aisle_info, std::istringstream & buffer) {
 	}
 }
 
-std::string get_store_name(std::string filename) {
-	int pos(0);
-	pos = filename.find("=");
-	std::string store_name = filename.substr(pos, std::string::npos);
-	pos = store_name.find("\"");
-	store_name.erase(0, pos + 1);
-	pos = store_name.find("\"");
-	store_name.erase(pos);
-	pos = store_name.find(".csv");
-	store_name.erase(pos);
-
-	return store_name;
+void retrieve_key_data(std::string line, int start_pos) {
+	start_pos = line.find("=", start_pos);
+	int end_pos = line.find("&", start_pos);
+	int len = end_pos - start_pos;
+	G_postal_code = line.substr(start_pos + 1, len - 1);
+	std::cout << G_postal_code << std::endl;
+	start_pos = line.find("store_name");
+	start_pos = line.find("=", start_pos);
+	end_pos = line.find("&", start_pos);
+	len = end_pos - start_pos;
+	G_store_name = line.substr(start_pos + 1, len - 1);
+	std::cout << G_store_name << std::endl;
 }
 
 void handle_request(ssize_t & ret, char * buffer, bool closed, int & new_fd, int & sockfd) {
@@ -173,29 +204,36 @@ void handle_request(ssize_t & ret, char * buffer, bool closed, int & new_fd, int
 		while (std::getline(iss, line)) {
 			int pos(0);
 			if ((pos = line.find("filename")) != std::string::npos) {
-				std::string filename = line.substr(pos, std::string::npos);
-				store_name = get_store_name(filename);
-				
 				std::getline(iss, line); std::getline(iss, line);
 				read_aisle_info(aisle_info, iss);
+				parse_csv(aisle_info);
+				
+				if (G_aisles.size() == 0) {
+					send_fail_response(new_fd, "We have failed to receive aisle info for " + G_store_name);
+					can_insert = false;
+				} else {
+					send_success_response(new_fd, "We have loaded aisle information for " + G_store_name + ":\n" + format_aisles_output());
+				}
+
+				if (can_insert) {
+					load_to_db();
+				}
+				
+				can_insert = false;
+				break;
+			}
+			if ((pos = line.find("postal_code")) != std::string::npos) {
+				retrieve_key_data(line, pos);
+				
+				if (G_postal_code == "" || G_store_name == "") {
+					send_fail_response(new_fd, "We have failed to receive a postal_code or store_name");
+				} else {
+					send_success_response(new_fd, "We have succeeded in retrieving the postal_code: " + G_postal_code + " and store_name: " + G_store_name);
+					can_insert = true;
+				}
 				break;
 			}
 		}
-
-		load_to_db(aisle_info, store_name);
-		std::ostringstream greeting;
-		greeting << "<html>\r\n<body>\r\nAisle data for " << store_name << ":\n\n" << format_aisles_output() << "\r\n</body>\r\n</html>\r\n";
-		G_aisles.clear();
-		std::ostringstream response;
-		response << "HTTP/1.0 200 OK\r\nContent-Length: " << greeting.str().length() << "\r\nContent-Type: text/html\r\n\r\n" << greeting.str();
-		ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
-		if (ret == -1) {
-			std::cout << "Failed to send." << std::endl;
-			exit(EXIT_FAILURE);
-		}
-
-		std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << response.str().length() << " bytes.\n";
-		std::cout << "Response:\n" << greeting.str() << std::endl;
 	} else if (ret == 0) {
 		std::cout << "Client closed connection. Terminating connection.\n" << a_bunch_of_dashes << std::endl;
 		close(new_fd);
