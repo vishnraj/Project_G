@@ -4,12 +4,17 @@
   Starting remote build
   Compiling sources:
   main.cpp
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(153,25): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(155,28): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(157,28): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(159,30): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(175,35): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(175,54): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(221,35): warning : ‘res’ is used uninitialized in this function [-Wuninitialized]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(140,75): warning : conversion to ‘int’ from ‘ssize_t {aka long int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(153,75): warning : conversion to ‘int’ from ‘ssize_t {aka long int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(183,38): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(184,40): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(188,36): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(189,38): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(190,36): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(206,35): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(206,54): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(225,38): warning : conversion to ‘int’ from ‘std::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(225,57): warning : comparison between signed and unsigned integer expressions [-Wsign-compare]
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp(259,35): warning : ‘res’ is used uninitialized in this function [-Wuninitialized]
   Linking objects
   load_into_database.vcxproj -> C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\bin\x64\Debug\load_into_database.out
