@@ -62,11 +62,37 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="..\SimpleDB\BigintColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\BoolColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Column.cpp" />
+    <ClCompile Include="..\SimpleDB\Database.cpp" />
+    <ClCompile Include="..\SimpleDB\DoubleColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Exception.cpp" />
+    <ClCompile Include="..\SimpleDB\IntColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\LongColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Query.cpp" />
+    <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp" />
+    <ClCompile Include="..\SimpleDB\StringColumn.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\SimpleDB\Column.h" />
+    <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\Database.h" />
+    <ClInclude Include="..\SimpleDB\DatabasePimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\Exception.h" />
+    <ClInclude Include="..\SimpleDB\macros.h" />
+    <ClInclude Include="..\SimpleDB\Query.h" />
+    <ClInclude Include="..\SimpleDB\QueryPimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\ScopedTransaction.h" />
+    <ClInclude Include="..\SimpleDB\SimpleDB.h" />
+    <ClInclude Include="..\SimpleDB\sqlwrap.h" />
   </ItemGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>/usr/lib64/libodbc.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

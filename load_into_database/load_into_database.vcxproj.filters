@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\SimpleDB\BigintColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\BoolColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\Column.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\Database.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\DoubleColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\Exception.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\IntColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\LongColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\Query.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimpleDB\StringColumn.cpp">
+      <Filter>SimpleDB</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="SimpleDB">
+      <UniqueIdentifier>{b8e59b99-d9b4-4fd8-ac45-d6a5f76a85e2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SimpleDB\Column.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\Database.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\DatabasePimplData_i.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\Exception.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\macros.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\Query.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\QueryPimplData_i.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\ScopedTransaction.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\SimpleDB.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimpleDB\sqlwrap.h">
+      <Filter>SimpleDB</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
