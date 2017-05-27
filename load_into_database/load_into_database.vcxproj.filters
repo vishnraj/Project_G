@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="..\SimpleDB\BigintColumn.cpp">
       <Filter>SimpleDB</Filter>
     </ClCompile>
@@ -35,6 +34,8 @@
     <ClCompile Include="..\SimpleDB\StringColumn.cpp">
       <Filter>SimpleDB</Filter>
     </ClCompile>
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="load_into_database.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SimpleDB">
@@ -75,5 +76,6 @@
     <ClInclude Include="..\SimpleDB\sqlwrap.h">
       <Filter>SimpleDB</Filter>
     </ClInclude>
+    <ClInclude Include="Common.h" />
   </ItemGroup>
 </Project>

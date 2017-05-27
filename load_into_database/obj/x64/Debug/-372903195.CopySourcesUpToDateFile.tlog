@@ -9,7 +9,8 @@ C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Query.cpp|636205630536263647|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ScopedTransaction.cpp|636205630536506727|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\StringColumn.cpp|636205630535353047|~/projects/ProjectGrocery/load_into_database|
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp|636310167476541916|~/projects/ProjectGrocery/load_into_database|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\Common.cpp|636314960163313212|~/projects/ProjectGrocery/load_into_database|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\load_into_database.cpp|636314959779826425|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Column.h|636205630533876048|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ColumnPimplData_i.h|636205630534412431|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.h|636205630535633229|~/projects/ProjectGrocery/load_into_database|
@@ -21,3 +22,4 @@ C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ScopedTransaction.h|636205630536023492|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\SimpleDB.h|636207172147315768|~/projects/ProjectGrocery/load_into_database|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\sqlwrap.h|636207131422377795|~/projects/ProjectGrocery/load_into_database|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\Common.h|636314960316035026|~/projects/ProjectGrocery/load_into_database|
