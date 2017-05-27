@@ -10,8 +10,9 @@ C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Query.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/Query.cpp
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ScopedTransaction.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/ScopedTransaction.cpp
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\StringColumn.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/StringColumn.cpp
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\main.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/load_into_database/main.cpp
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\Common.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/load_into_database/Common.cpp
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database|/home/ec2-user/projects/ProjectGrocery/load_into_database/load_into_database
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\load_into_database.cpp|/home/ec2-user/projects/ProjectGrocery/load_into_database/load_into_database/load_into_database.cpp
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Column.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/Column.h
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ColumnPimplData_i.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/ColumnPimplData_i.h
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/Database.h
@@ -23,3 +24,4 @@ C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ScopedTransaction.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/ScopedTransaction.h
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\SimpleDB.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/SimpleDB.h
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\sqlwrap.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/SimpleDB/sqlwrap.h
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\load_into_database\Common.h|/home/ec2-user/projects/ProjectGrocery/load_into_database/load_into_database/Common.h

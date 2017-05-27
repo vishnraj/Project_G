@@ -73,7 +73,8 @@
     <ClCompile Include="..\SimpleDB\Query.cpp" />
     <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp" />
     <ClCompile Include="..\SimpleDB\StringColumn.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="load_into_database.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SimpleDB\Column.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="..\SimpleDB\ScopedTransaction.h" />
     <ClInclude Include="..\SimpleDB\SimpleDB.h" />
     <ClInclude Include="..\SimpleDB\sqlwrap.h" />
+    <ClInclude Include="Common.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>

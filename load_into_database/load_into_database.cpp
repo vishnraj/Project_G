@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <dirent.h>
 
 #include <iostream>
 #include <iomanip>
@@ -17,9 +16,10 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
 
 #include "../SimpleDB/SimpleDB.h"
+
+#include "Common.h"
 
 // C-style constants
 #define MYPORT "8037"  // the port users will be connecting to
@@ -32,91 +32,8 @@ const int MAX_FILE_ROWS = 30;
 const int MAX_FILE_COLUMNS = 15;
 const double THRESHOLD_VOTE_PERCENTAGE = 90.0;
 
-// Class and Struct Definitions
-struct NaturalOrderLess {
-	bool operator() (const std::string & x, const std::string & y) const {
-		// the shorter string is always considered less
-		// digit cases:
-		// only when the first characters currently being
-		// compared in both string is a digit
-		// when a sequence of numbers is found and is equal
-		// the resulting number is compared and the smaller number
-		// makes the string that it belongs to less than the other
-		// character cases:
-		// the smaller ascii value that is found first makes the
-		// string that holds this the string less than the other
-		// Equal cases:
-		// This must be false, as this function will only return 
-		// true for x < y, same as the comparator std::less does
-
-		for (std::string::const_iterator i(x.begin()), j(y.begin()); i != x.end(); ++i, ++j) {
-			if (j == y.end()) {
-				return false;
-			}
-
-			if (std::isdigit((int)*i) != 0 && std::isdigit((int)*j) != 0) {
-				// digits case
-				// first find the resulting
-				// number from the sequence
-				int decimal_multiplier = 1;
-				int val_x = *i - '0';
-				int val_y = *j - '0';
-				++i, ++j;
-
-				for (; i != x.end(); ++i, ++j) {
-					if (j == y.end()) {
-						return false;
-					}
-					if (std::isdigit((int)*i) != 0 && std::isdigit((int)*j) != 0) {
-						(val_x *= std::pow(10, decimal_multiplier)) += (int)(*i - '0');
-						(val_y *= std::pow(10, decimal_multiplier)) += (int)(*j - '0');
-					} else if (std::isdigit(*i) == 0 || std::isdigit(*j) == 0) {
-						break;
-					}
-
-					++decimal_multiplier;
-				}
-
-				
-				if (i == x.end() && j != y.end()) {
-					return true;
-				} else if (i == x.end() && j == y.end()) {
-					if (val_x < val_y) {
-						return true;
-					} else if (val_x > val_y) {
-						return false;
-					}
-
-					break;
-				} else {
-					if (std::isdigit((int)*j) != 0 && std::isdigit((int)*i) == 0) {
-						return true;
-					} else if (std::isdigit((int)*i) != 0 && std::isdigit((int)*j) == 0) {
-						return false;
-					} else {
-						if (val_x < val_y) {
-							return true;
-						} else if (val_x > val_y) {
-							return false;
-						}
-					}
-				}
-			} else {
-				// character case
-				if (*i < *j) {
-					return true;
-				} else if (*i > *j) {
-					return false;
-				}
-			}
-		}
-
-		return false;
-	}
-};
-
 // Global state variables
-std::map<std::string, std::vector <std::string>, NaturalOrderLess> G_aisles; // sorted by aisle symbol (natural order less ftw)
+std::map<std::string, std::vector<std::string>, NaturalOrderLess> G_aisles; // sorted by aisle symbol (natural order less ftw)
 
 std::string G_store_name;
 std::string G_address;
@@ -124,10 +41,6 @@ bool G_can_insert = false;
 std::string G_response;
 std::string G_conn_string("DSN=AisleItemLocator;UID=vishnraj;PWD=***REMOVED***");
 SimpleDB::Database G_db(G_conn_string, SimpleDB::Database::CONNECTION_METHOD_SQLDriverConnect);
-
-// Utility functions
-std::string format_aisles_output();
-std::string url_decode(const std::string & str);
 
 // Database loading functions
 void pre_process_store_keys(std::string & street, std::string & city
@@ -164,41 +77,6 @@ void send_response(int new_fd, std::string message);
 void cleanup(int & new_fd, int & sockfd, struct addrinfo * res);
 int instantiate_connection(int & sock_fd);
 void setup(struct addrinfo & hints, struct addrinfo * res, int & sockfd, int & new_fd);
-
-std::string url_decode(const std::string & str) {
-	std::string ret;
-	char ch;
-	int i, ii, len = str.length();
-
-	for (i = 0; i < len; i++) {
-		if (str[i] != '%') {
-			if (str[i] == '+')
-				ret += ' ';
-			else
-				ret += str[i];
-		} else {
-			sscanf(str.substr(i + 1, 2).c_str(), "%x", &ii);
-			ch = static_cast<char>(ii);
-			ret += ch;
-			i = i + 2;
-		}
-	}
-	return ret;
-}
-
-std::string format_aisles_output() {
-	std::ostringstream output;
-
-	for (std::map<std::string, std::vector<std::string> >::iterator i = G_aisles.begin(); i != G_aisles.end(); ++i) {
-		output << i->first << ": ";
-		for (std::vector<std::string>::iterator j = i->second.begin(); j != i->second.end(); ++j) {
-			output << *j << " ";
-		}
-		output << "\n\n";
-	}
-
-	return output.str();
-}
 
 void pre_process_store_keys(std::string & street, std::string & city
 	, std::string & state, std::string & zip, std::string & country)
@@ -288,7 +166,8 @@ bool check_store_exists(const std::string & street_val, const std::string & city
 		}
 	} catch (SimpleDB::Exception & e) {
 		std::cerr << "Caught exception in check_store_exists: " <<  e.what() << std::endl;
-		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " has already been added. Try again and/or contact us to report this issue. Thank you.";
+		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " has already been added.";
+		G_response += " Try again and/or contact us to report this issue.";
 		G_can_insert = false;
 	}
 
@@ -328,7 +207,8 @@ bool is_open_for_update(const int64_t & sid_val) {
 			bool from_store_val = from_store.value();
 
 			if (from_store_val) {
-				G_response = "We have received this data from " + G_store_name + ", so we will only update it once their records show a change. Thank you.";
+				G_response = "We have received this data from " + G_store_name + " with address " + G_address + "."; 
+				G_response += " We will only update it once their records show a change.";
 
 				return false; // store provided data should not get modified
 							  // by this process, this is only for 
@@ -345,13 +225,15 @@ bool is_open_for_update(const int64_t & sid_val) {
 			}
 
 		} else {
-			G_response = "We had a problem checking whether we could update the data for this store. Trying again and/or contact us to report this issue. Thank you.";
+			G_response = "We had a problem checking whether we could update the data for " + G_store_name + " with address " + G_address + ".";
+			G_response += " Trying again and/or contact us to report this issue.";
 			G_can_insert = false;
 		}
 
 	} catch (SimpleDB::Exception & e) {
 		std::cerr << "Caught exception in is_open_for_update: " << e.what() << std::endl;
-		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " has already been added. Try again and/or contact us to report this issue. Thank you.";
+		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " with address " + G_address;
+		G_response += " has already been added. Try again and/or contact us to report this issue.";
 		G_can_insert = false;
 	}
 
@@ -389,12 +271,14 @@ void load_to_status_table(int64_t & sid_val)
 			sid_val = std::stol(sid.value()); // long long should be 64 int on this system
 			std::cout << "SID generated: " << sid_val << " for " << G_store_name << std::endl;
 		} else {
-			G_response = "We were unable to add the data for " + G_store_name + " to our records. Try agin and/or contact us if this appears to be an ongoing issue. Thank you.";
+			G_response = "We were unable to add the data for " + G_store_name + " with address " + G_address + " to our records.";
+			G_response += " Try agin and/or contact us if this appears to be an ongoing issue. Thank you.";
 			G_can_insert = false;
 		}
 	} catch (SimpleDB::Exception & e) {
 		std::cerr << "Caught exception in load_to_status_table: " << e.what() << std::endl;
-		G_response = "Something went wrong while loading the data to our database for " + G_store_name + ". Trying again and/or contact us. Thank you.";
+		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
+		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
 	}
 }
@@ -409,9 +293,9 @@ void load_to_aisle_table(const int64_t & sid_val, bool data_exists)
 		if (data_exists) {
 			std::ostringstream query;
 			query << "DELETE FROM AisleItemLocator.Aisle WHERE SID=" << sid_val; // in order to maintain total
-																						// accuracy, for now this will
-																						// be all or nothing, but later
-																						// we will change how we do this
+																				 // accuracy, for now this will
+																				 // be all or nothing, but later
+																				 // we will change how we do this
 			q.execute(query.str());
 		}
 
@@ -434,8 +318,18 @@ void load_to_aisle_table(const int64_t & sid_val, bool data_exists)
 		}
 	} catch (SimpleDB::Exception & e) {
 		std::cerr << "Caught Exception in load_to_aisle_table: " << e.what() << std::endl;
-		G_response = "Something went wrong while loading the data to our database for " + G_store_name + ". Trying again and/or contact us. Thank you.";
+		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
+		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
+		return;
+	}
+
+	if (data_exists) {
+		G_response = "We have received aisle information for " + G_store_name + " with address " + G_address + "\n\n"; 
+		G_response += format_aisles_output(G_aisles) + "and have successfully updated it!";
+	} else {
+		G_response = "We have received aisle information for " + G_store_name + " with address " + G_address + "\n\n"; 
+		G_response += format_aisles_output(G_aisles) + "and have successfully loaded it!";
 	}
 }
 
@@ -456,7 +350,8 @@ void load_to_store_table(const std::string & street_val
 		q.execute(query.str());
 	} catch (SimpleDB::Exception & e) {
 		std::cerr << "Caught Exception in load_to_store_table: " << e.what() << std::endl;
-		G_response = "Something went wrong while loading the data to our database for " + G_store_name + ". Trying again and/or contact us. Thank you.";
+		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
+		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
 	}
 }
@@ -483,7 +378,8 @@ void load_to_db() {
 		} else if (G_can_insert) {
 			// generate a response that tells the user
 			// that the store data cannot be loaded
-			G_response = "We cannot load the data for " + G_store_name + " because it is no longer open for update. Check back later to see if the status changes. Thank you.";
+			G_response = "We cannot load the data for " + G_store_name + " with address " + G_address + " because it is no longer open for update.";
+			G_response += " Check back later to see if the status changes or try a different location if this store has multiple locations. Thank you.";
 		}
 	} else if (G_can_insert) {
 		// if it doesn't, load the data to the status table
@@ -566,7 +462,8 @@ void parse_csv(const std::string & aisle_info) {
 
 			++num_columns;
 			if (num_columns == MAX_FILE_COLUMNS) {
-				std::cerr << "We have received a file containig >= " << num_columns << " columns which is beyong the supported number for a store, which is " << MAX_FILE_COLUMNS << ". We are cutting off here.";
+				std::cerr << "We have received a file containig >= " << num_columns << " columns which is past ";
+				std::cerr << MAX_FILE_COLUMNS << ". We are cutting off here.";
 				break; // protect against spamming us with an impossibly
 					   // large number of rows for a grocery store
 			}
@@ -574,7 +471,8 @@ void parse_csv(const std::string & aisle_info) {
 
 		++num_rows;
 		if (num_rows == MAX_FILE_ROWS) {
-			std::cerr << "We have received a file containig >= " << num_rows << " rows which is beyong the supported number for a store, which is " << MAX_FILE_ROWS << ". We are cutting off here.";
+			std::cerr << "We have received a file containig >= " << num_rows << " rows which is past ";
+			std::cerr << MAX_FILE_ROWS << ". We are cutting off here.";
 			break; // protect against spamming us an impossibly
 				   // large number of rows for a grocery store
 		}
@@ -615,14 +513,14 @@ void handle_incoming_aisle_data(std::string & payload, std::istringstream & requ
 		parse_csv(aisle_info);
 
 		if (G_aisles.size() != 0 && G_can_insert) {
-			G_response = "We have received aisle information for " + G_store_name + ":\n\n" + format_aisles_output() + "and have successfully loaded it!";
 			load_to_db();
 		} else {
-			G_response = "We have failed to receive non-empty aisle info for " + G_store_name + " or we have received it, but we are unable to load it because";
-			G_response += " you did not properly specify store name and address (if this is the case you will receive this response as well)";
+			G_response = "We have failed to receive non-empty aisle info for " + G_store_name + " or we have received it, but we are unable to load it";
+			G_response += " because you did not properly specify store name and address (if this is the case you will receive this response as well)";
 		}
 	} else {
-		G_response = "We have received file for store " + G_store_name + ", however it is not a csv file. Please format data as a comma separated csv file and resend it. Thank you.";
+		G_response = "We have received a file for store " + G_store_name + ", however it is not a csv file.";
+		G_response += " Please format data as a csv file and resend it. Thank you.";
 	}
 
 	// End end of a load transaction
