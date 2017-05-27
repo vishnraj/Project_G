@@ -39,7 +39,7 @@ std::string G_store_name;
 std::string G_address;
 bool G_can_insert = false;
 std::string G_response;
-std::string G_conn_string("DSN=AisleItemLocator;UID=vishnraj;PWD=***REMOVED***");
+std::string G_conn_string("DSN=AisleItemLocator;UID=vishnraj;PWD=");
 SimpleDB::Database G_db(G_conn_string, SimpleDB::Database::CONNECTION_METHOD_SQLDriverConnect);
 
 // Database loading functions
