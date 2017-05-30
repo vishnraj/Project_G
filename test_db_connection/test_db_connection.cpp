@@ -4,7 +4,7 @@
 
 int main()
 {
-	std::string conn_string("DSN=test_db;UID=vishnraj;PWD=");
+	std::string conn_string("DSN=test_db;");
 	SimpleDB::Database db(conn_string, SimpleDB::Database::CONNECTION_METHOD_SQLDriverConnect);
 
 	SimpleDB::StringColumn name(100);

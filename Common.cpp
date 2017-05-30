@@ -1,4 +1,5 @@
 #include "Common.h"
+#include "Logger.h"
 
 #include <sstream>
 #include <cmath>
@@ -83,6 +84,34 @@ bool NaturalOrderLess::operator() (const std::string & x, const std::string & y)
 	}
 
 	return false;
+}
+
+DatabaseInterface::DatabaseInterface(std::string & conn_str) : 
+ m_max_reconnects(3), m_conn_str(conn_str) 
+{
+    if (!reconnect()) {
+    	BOOST_LOG_TRIVIAL(error) << "We are unable to connect to database. Cannot execute this query.";
+    }
+}
+
+bool DatabaseInterface::reconnect() {
+	int attempts = 0;
+	while (attempts < m_max_reconnects) {
+		try {
+			m_db.reset(new SimpleDB::Database(m_conn_str));
+			return true;
+		}
+		catch (SimpleDB::Exception & e) {
+			++attempts;
+			continue;
+		}
+	}
+
+	return false;
+}
+
+bool DatabaseInterface::run_query(std::string & query) {
+
 }
 
 std::string url_decode(const std::string & str) {

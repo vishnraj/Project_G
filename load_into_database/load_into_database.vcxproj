@@ -61,7 +61,10 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemGroup>
+    <ClCompile Include="..\Common.cpp" />
+    <ClCompile Include="..\Logger.cpp" />
     <ClCompile Include="..\SimpleDB\BigintColumn.cpp" />
     <ClCompile Include="..\SimpleDB\BoolColumn.cpp" />
     <ClCompile Include="..\SimpleDB\Column.cpp" />
@@ -73,10 +76,11 @@
     <ClCompile Include="..\SimpleDB\Query.cpp" />
     <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp" />
     <ClCompile Include="..\SimpleDB\StringColumn.cpp" />
-    <ClCompile Include="Common.cpp" />
     <ClCompile Include="load_into_database.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common.h" />
+    <ClInclude Include="..\Logger.h" />
     <ClInclude Include="..\SimpleDB\Column.h" />
     <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h" />
     <ClInclude Include="..\SimpleDB\Database.h" />
@@ -88,10 +92,26 @@
     <ClInclude Include="..\SimpleDB\ScopedTransaction.h" />
     <ClInclude Include="..\SimpleDB\SimpleDB.h" />
     <ClInclude Include="..\SimpleDB\sqlwrap.h" />
-    <ClInclude Include="Common.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
+      <AdditionalDependencies>/usr/lib64/libodbc.so;/usr/lib64/libpthread.so.0;/usr/local/lib/libboost_atomic.so;/usr/local/lib/libboost_chrono.so;/usr/local/lib/libboost_container.so;/usr/local/lib/libboost_context.so;/usr/local/lib/libboost_coroutine.so;/usr/local/lib/libboost_date_time.so;/usr/local/lib/libboost_filesystem.so;/usr/local/lib/libboost_locale.so;/usr/local/lib/libboost_math_c99f.so;/usr/local/lib/libboost_math_c99l.so;/usr/local/lib/libboost_math_c99.so;/usr/local/lib/libboost_math_tr1f.so;/usr/local/lib/libboost_math_tr1l.so;/usr/local/lib/libboost_math_tr1.so;/usr/local/lib/libboost_prg_exec_monitor.so;/usr/local/lib/libboost_program_options.so;/usr/local/lib/libboost_random.so;/usr/local/lib/libboost_regex.so;/usr/local/lib/libboost_serialization.so;/usr/local/lib/libboost_signals.so;/usr/local/lib/libboost_system.so;/usr/local/lib/libboost_thread.so;/usr/local/lib/libboost_timer.so;/usr/local/lib/libboost_unit_test_framework.so;/usr/local/lib/libboost_wave.so;/usr/local/lib/libboost_wserialization.so;/usr/local/lib/libboost_log.so;/usr/local/lib/libboost_log_setup.so;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>-DBOOST_LOG_DYN_LINK %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <ClCompile />
+    <ClCompile />
+    <ClCompile />
+    <ClCompile>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Program Files\boost\boost_1_64_0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>/usr/lib64/libodbc.so;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

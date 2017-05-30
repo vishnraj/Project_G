@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
-#include "../SimpleDB/SimpleDB.h"
+#include "SimpleDB/SimpleDB.h"
 
 // Comparator for natural order sort
 struct NaturalOrderLess {
@@ -12,13 +13,17 @@ struct NaturalOrderLess {
 };
 
 class DatabaseInterface {
-	std::string m_dsn;
-	std::string m_user;
-	std::string m_pwd;
-	SimpleDB::Database m_db;
+    const int m_max_reconnects; 
 
-	DatabaseInterface();
+	std::string m_conn_str;
+	std::unique_ptr<SimpleDB::Database> m_db;
+    
+    bool reconnect();
 
+public:
+	DatabaseInterface(std::string & conn_str);
+
+    bool run_query(std::string & query);
 };
 
 // List order in the order that is present in the map of aisles

@@ -17,9 +17,9 @@
 #include <vector>
 #include <algorithm>
 
+#include "../Logger.h"
+#include "../Common.h"
 #include "../SimpleDB/SimpleDB.h"
-
-#include "Common.h"
 
 // C-style constants
 #define MYPORT "8037"  // the port users will be connecting to
@@ -27,7 +27,8 @@
 #define MAX_LENGTH 3000 // the length of the receiving buffer
 
 // C++-style constants
-const char * a_bunch_of_dashes = "----------------------------\n";
+const char * usage = "load_into_database <log_file> <min_severity_level, ex: --debug>";
+const char * separator = "-----------------------------";
 const int MAX_FILE_ROWS = 30;
 const int MAX_FILE_COLUMNS = 15;
 const double THRESHOLD_VOTE_PERCENTAGE = 90.0;
@@ -37,24 +38,28 @@ std::map<std::string, std::vector<std::string>, NaturalOrderLess> G_aisles; // s
 
 std::string G_store_name;
 std::string G_address;
+
 bool G_can_insert = false;
 std::string G_response;
-std::string G_conn_string("DSN=AisleItemLocator;UID=vishnraj;PWD=");
+std::string G_conn_string("DSN=AisleItemLocator;");
 SimpleDB::Database G_db(G_conn_string, SimpleDB::Database::CONNECTION_METHOD_SQLDriverConnect);
 
 // Database loading functions
-void pre_process_store_keys(std::string & street, std::string & city
-	, std::string & state, std::string & zip, std::string & country);
-bool check_store_exists(const std::string & street_val, const std::string & city_val
+void pre_process_store_keys(std::string & store_name
+	, std::string & street, std::string & city
+	, std::string & state, std::string & zip
+	, std::string & country);
+bool check_store_exists(const std::string & store_name
+	, const std::string & street_val, const std::string & city_val
 	, const std::string & state_val, const std::string & zip_val
 	, const std::string & country_val, int64_t & sid_val);
 bool is_open_for_update(const int64_t & sid_val);
 void load_to_status_table(int64_t & sid_val);
 void load_to_aisle_table(const int64_t & sid_val, bool data_exists);
-void load_to_store_table(const std::string & street_val
-	, const std::string & city_val, const std::string & state_val
-	, const std::string & zip_val, const std::string & country_val
-	, const int64_t & sid_val);
+void load_to_store_table(const std::string & store_name 
+	, const std::string & street_val, const std::string & city_val
+	, const std::string & state_val, const std::string & zip_val
+	, const std::string & country_val, const int64_t & sid_val);
 void load_to_db();
 
 // Aisle data request helper functions
@@ -78,9 +83,13 @@ void cleanup(int & new_fd, int & sockfd, struct addrinfo * res);
 int instantiate_connection(int & sock_fd);
 void setup(struct addrinfo & hints, struct addrinfo * res, int & sockfd, int & new_fd);
 
-void pre_process_store_keys(std::string & street, std::string & city
-	, std::string & state, std::string & zip, std::string & country)
+void pre_process_store_keys(std::string & store_name
+	, std::string & street, std::string & city
+	, std::string & state, std::string & zip
+	, std::string & country)
 {
+	store_name = G_store_name;
+
 	int start_pos = 0;
 	int end_pos = G_address.find(',', start_pos);
 	street = G_address.substr(start_pos, end_pos);
@@ -100,9 +109,19 @@ void pre_process_store_keys(std::string & street, std::string & city
 	zip = G_address.substr(start_pos, end_pos - start_pos);
 
 	start_pos = end_pos;
-	country = G_address.substr(start_pos + 1, std::string::npos);
+	country = G_address.substr(start_pos + 1, std::string::npos);	
 
-	std::string::iterator start_itr = std::remove(street.begin(), street.end(), ' ');
+	// is this really necessary?
+	// the regex in a databsae should be
+	// good enough to account for spacing
+	// and google's API should not send 
+	// us differently spaced out values
+	// for the same store
+
+	std::string::iterator start_itr = std::remove(store_name.begin(), store_name.end(), ' ');
+	store_name.erase(start_itr, store_name.end());
+
+	start_itr = std::remove(street.begin(), street.end(), ' ');
 	street.erase(start_itr, street.end());
 
 	start_itr = std::remove(city.begin(), city.end(), ' ');
@@ -118,24 +137,22 @@ void pre_process_store_keys(std::string & street, std::string & city
 	country.erase(start_itr, country.end());
 
 	start_itr = std::remove(country.begin(), country.end(), ' ');
-	country.erase(start_itr, country.end());
+	country.erase(start_itr, country.end());	
 
-	start_itr = std::remove(G_store_name.begin(), G_store_name.end(), ' ');
-	G_store_name.erase(start_itr, G_store_name.end());
-
-	std::cout << street << '\n';
-	std::cout << city << '\n';
-	std::cout << state << '\n';
-	std::cout << zip << '\n';
-	std::cout << country << '\n';
-	std::cout << G_store_name << '\n';
+	BOOST_LOG_TRIVIAL(debug) << street;
+	BOOST_LOG_TRIVIAL(debug) << city;
+	BOOST_LOG_TRIVIAL(debug) << state;
+	BOOST_LOG_TRIVIAL(debug) << zip;
+	BOOST_LOG_TRIVIAL(debug) << country;
+	BOOST_LOG_TRIVIAL(debug) << store_name;
 }
 
-bool check_store_exists(const std::string & street_val, const std::string & city_val
+bool check_store_exists(const std::string & store_name
+	, const std::string & street_val, const std::string & city_val
 	, const std::string & state_val, const std::string & zip_val
 	, const std::string & country_val, int64_t & sid_val)
 {
-	std::cout << "We are checking whether the store exists for " << G_store_name << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << "We are checking whether the store exists for " << G_store_name;
 
 	SimpleDB::StringColumn name(35);
 	SimpleDB::StringColumn street(35);
@@ -146,7 +163,7 @@ bool check_store_exists(const std::string & street_val, const std::string & city
 	SimpleDB::StringColumn sid(20);
 
 	std::ostringstream query;
-	query << "SELECT * FROM AisleItemLocator.Store WHERE (Name=\'" << G_store_name;
+	query << "SELECT * FROM AisleItemLocator.Store WHERE (Name=\'" << store_name;
 	query << "\' AND Street=\'" << street_val << "\' AND City=\'" << city_val;
 	query << "\' AND State=\'" << state_val << "\' AND zip=\'" << zip_val;
 	query << "\' AND Country=\'" << country_val << "\');"; // select * to get all columns,
@@ -165,7 +182,7 @@ bool check_store_exists(const std::string & street_val, const std::string & city
 			return true;
 		}
 	} catch (SimpleDB::Exception & e) {
-		std::cerr << "Caught exception in check_store_exists: " <<  e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Caught exception in check_store_exists: " <<  e.what();
 		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " has already been added.";
 		G_response += " Try again and/or contact us to report this issue.";
 		G_can_insert = false;
@@ -175,7 +192,7 @@ bool check_store_exists(const std::string & street_val, const std::string & city
 }
 
 bool is_open_for_update(const int64_t & sid_val) {
-	std::cout << "Checking if we can update aisle data for " << G_store_name << " with SID: " << sid_val << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << "Checking if we can update aisle data for " << G_store_name << " with SID: " << sid_val;
 
 	SimpleDB::DoubleColumn threshold; // using a large varchar for double
 	
@@ -231,7 +248,7 @@ bool is_open_for_update(const int64_t & sid_val) {
 		}
 
 	} catch (SimpleDB::Exception & e) {
-		std::cerr << "Caught exception in is_open_for_update: " << e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Caught exception in is_open_for_update: " << e.what();
 		G_response = "Our database had an issue while trying to verify whether or not the data for " + G_store_name + " with address " + G_address;
 		G_response += " has already been added. Try again and/or contact us to report this issue.";
 		G_can_insert = false;
@@ -242,7 +259,7 @@ bool is_open_for_update(const int64_t & sid_val) {
 
 void load_to_status_table(int64_t & sid_val)
 {
-	std::cout << "Begin loading to the status table for " << G_store_name << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << "Begin loading to the status table for " << G_store_name;
 	
 	SimpleDB::StringColumn sid(20); // the decimal value returned by SELECT LAST_INSERT_ID()
 									// is 21 digits long, making this larger than the bytes
@@ -269,14 +286,14 @@ void load_to_status_table(int64_t & sid_val)
 		if (q.fetchRow()) {
 			std::string temp_val();
 			sid_val = std::stol(sid.value()); // long long should be 64 int on this system
-			std::cout << "SID generated: " << sid_val << " for " << G_store_name << std::endl;
+			BOOST_LOG_TRIVIAL(debug) << "SID generated: " << sid_val << " for " << G_store_name;
 		} else {
 			G_response = "We were unable to add the data for " + G_store_name + " with address " + G_address + " to our records.";
 			G_response += " Try agin and/or contact us if this appears to be an ongoing issue. Thank you.";
 			G_can_insert = false;
 		}
 	} catch (SimpleDB::Exception & e) {
-		std::cerr << "Caught exception in load_to_status_table: " << e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Caught exception in load_to_status_table: " << e.what();
 		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
 		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
@@ -285,7 +302,7 @@ void load_to_status_table(int64_t & sid_val)
 
 void load_to_aisle_table(const int64_t & sid_val, bool data_exists)
 {
-	std::cout << "Begin loading to the aisle table for" << G_store_name << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << "Begin loading to the aisle table for " << G_store_name;
 
 	try {
 		SimpleDB::Query q(G_db);
@@ -317,7 +334,7 @@ void load_to_aisle_table(const int64_t & sid_val, bool data_exists)
 			q.execute(query.str());
 		}
 	} catch (SimpleDB::Exception & e) {
-		std::cerr << "Caught Exception in load_to_aisle_table: " << e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Caught Exception in load_to_aisle_table: " << e.what();
 		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
 		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
@@ -325,31 +342,31 @@ void load_to_aisle_table(const int64_t & sid_val, bool data_exists)
 	}
 
 	if (data_exists) {
-		G_response = "We have received aisle information for " + G_store_name + " with address " + G_address + "\n\n"; 
+		G_response = "We have received aisle information for " + G_store_name + " at " + G_address + "\n\n"; 
 		G_response += format_aisles_output(G_aisles) + "and have successfully updated it!";
 	} else {
-		G_response = "We have received aisle information for " + G_store_name + " with address " + G_address + "\n\n"; 
-		G_response += format_aisles_output(G_aisles) + "and have successfully loaded it!";
+		G_response = "We have received aisle information for " + G_store_name + " at " + G_address + "\n\n"; 
+		G_response += format_aisles_output(G_aisles) + "and this was the first load for it! Nice!";
 	}
 }
 
-void load_to_store_table(const std::string & street_val
-	, const std::string & city_val, const std::string & state_val
-	, const std::string & zip_val, const std::string & country_val
-	, const int64_t & sid_val)
+void load_to_store_table(const std::string & store_name 
+	, const std::string & street_val, const std::string & city_val
+	, const std::string & state_val, const std::string & zip_val
+	, const std::string & country_val, const int64_t & sid_val)
 {
-	std::cout << "Begin loading to the store table for" << G_store_name << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << "Begin loading to the store table for" << G_store_name;
 
 	std::ostringstream query;
 	query << "INSERT INTO AisleItemLocator.Store (Name, Street, City, State, Zip, Country, SID) VALUES(\'";
-	query << G_store_name << "\', \'" << street_val << "\', \'" << city_val << "\', \'" << state_val << "\'";
+	query << store_name << "\', \'" << street_val << "\', \'" << city_val << "\', \'" << state_val << "\'";
 	query << ", \'" << zip_val << "\', \'" << country_val << "\', \'" << sid_val << "\');";
 
 	try {
 		SimpleDB::Query q(G_db);
 		q.execute(query.str());
 	} catch (SimpleDB::Exception & e) {
-		std::cerr << "Caught Exception in load_to_store_table: " << e.what() << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Caught Exception in load_to_store_table: " << e.what();
 		G_response = "Something went wrong while loading the data to our database for " + G_store_name + " with address " + G_address + ".";
 		G_response += " Trying again and/or contact us. Thank you.";
 		G_can_insert = false;
@@ -357,24 +374,27 @@ void load_to_store_table(const std::string & street_val
 }
 
 void load_to_db() {
+	bool data_exists = false;
+	std::string name;
 	std::string street;
 	std::string city;
 	std::string state;
 	std::string zip;
 	std::string country;
 	int64_t sid = -1; // this will be generated by the database
-					  // or retrieved from it at a later point 
+					  // or retrieved from it at a later point
 
-	pre_process_store_keys(street, city, state, zip, country); // initializes all of these
-															   // from the data sent in request
+	pre_process_store_keys(name, street, city, state, zip, country); // initializes all of these
+															   		 // from the data sent in request
+	data_exists = check_store_exists(name, street, city
+		, state, zip, country, sid); 
 	// check if the store exists in our records
-	if (check_store_exists(street, city
-		, state, zip, country, sid) && G_can_insert) {
+	if (data_exists && G_can_insert) {
 		// next we check if we can update this table
 		// by querying the status table
 		if (is_open_for_update(sid) && G_can_insert) {
 			// now we load the data to the aisle table
-			load_to_aisle_table(sid, true);
+			load_to_aisle_table(sid, data_exists);
 		} else if (G_can_insert) {
 			// generate a response that tells the user
 			// that the store data cannot be loaded
@@ -396,7 +416,7 @@ void load_to_db() {
 		if (G_can_insert) {
 			// we then use this sid to load the aisles to the
 			// aisle table
-			load_to_aisle_table(sid, false);
+			load_to_aisle_table(sid, data_exists);
 		} else {
 			return; // rollback the transaction
 		}
@@ -404,7 +424,7 @@ void load_to_db() {
 		if (G_can_insert) {
 			// and add it as a foreign key column (in this case simply
 			// a non-null value) to the store table as we load it as well
-			load_to_store_table(street, city, state, zip, country, sid);
+			load_to_store_table(name, street, city, state, zip, country, sid);
 		} else {
 			return; // rollback the transaction
 		}
@@ -414,6 +434,12 @@ void load_to_db() {
 		}
 
 		transaction.commit(); // everything went correctly, commit
+	}
+
+	if (G_can_insert && data_exists) {
+		BOOST_LOG_TRIVIAL(info) << "Success! We have updated the data in the database for " << G_store_name << " at " << G_address << ".";
+	} else if (G_can_insert && !data_exists) {
+		BOOST_LOG_TRIVIAL(info) << "Success! First load of data to database for " << G_store_name << " at " << G_address << ".";
 	}
 }
 
@@ -462,8 +488,10 @@ void parse_csv(const std::string & aisle_info) {
 
 			++num_columns;
 			if (num_columns == MAX_FILE_COLUMNS) {
-				std::cerr << "We have received a file containig >= " << num_columns << " columns which is past ";
-				std::cerr << MAX_FILE_COLUMNS << ". We are cutting off here.";
+				std::ostringstream error_msg;
+				error_msg << "We have received a file containig >= " << num_columns << " columns which is past ";
+				error_msg << MAX_FILE_COLUMNS << ". We are cutting off here."; 
+				BOOST_LOG_TRIVIAL(error) << error_msg.str();
 				break; // protect against spamming us with an impossibly
 					   // large number of rows for a grocery store
 			}
@@ -471,8 +499,10 @@ void parse_csv(const std::string & aisle_info) {
 
 		++num_rows;
 		if (num_rows == MAX_FILE_ROWS) {
-			std::cerr << "We have received a file containig >= " << num_rows << " rows which is past ";
-			std::cerr << MAX_FILE_ROWS << ". We are cutting off here.";
+			std::ostringstream error_msg;
+			error_msg << "We have received a file containig >= " << num_rows << " rows which is past ";
+			error_msg << MAX_FILE_ROWS << ". We are cutting off here.";
+			BOOST_LOG_TRIVIAL(error) << error_msg.str();
 			break; // protect against spamming us an impossibly
 				   // large number of rows for a grocery store
 		}
@@ -543,7 +573,7 @@ bool key_data_in_payload(std::string & payload, int start_pos) {
 	G_store_name = payload.substr(start_pos + 1, len - 1);
 	G_store_name = url_decode(G_store_name);
 	
-	std::cout << G_store_name << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << G_store_name;
 
 	if (G_store_name.empty())
 		return false;
@@ -559,7 +589,7 @@ bool key_data_in_payload(std::string & payload, int start_pos) {
 	G_address = payload.substr(start_pos + 1, len - 1);
 	G_address = url_decode(G_address);
 	
-	std::cout << G_address << std::endl;
+	BOOST_LOG_TRIVIAL(debug) << G_address;
 
 	if (G_address.empty())
 		return false;
@@ -571,17 +601,22 @@ void handle_incoming_key_data(std::string & payload, int start_pos) {
 	bool is_key_data_in_payload = key_data_in_payload(payload, start_pos);
 
 	if (is_key_data_in_payload) {
-		G_response = "We have succeeded in verifying that the store name " + G_store_name + " with address " + G_address + " can be updated!";
+		G_response = "We have verified that you sent a store name and address for " + G_store_name + " at " + G_address + "!";
 		G_can_insert = true;
 	} else if (!is_key_data_in_payload) {
-		G_response = "Request did not contain either a store name or store address. Please resubmit your request with these fields.";
+		G_response = "Request did not contain a store name and/or store address. Please resubmit your request with these fields.";
+	}
+
+	if (G_can_insert) {
+		BOOST_LOG_TRIVIAL(info) << "Success! We have the key data for " << G_store_name << " at " << G_address << ".";
 	}
 }
 
 void handle_request(ssize_t & ret, char * buffer, bool & closed) {
 	if (ret > 0) {
 		std::istringstream request(std::string(buffer, ret));
-		std::cout << "Request sent to service:\n" << request.str() << std::endl;
+		BOOST_LOG_TRIVIAL(info) << "Received a request. Begin processing."; 
+		BOOST_LOG_TRIVIAL(debug) << "Request:\n" << request.str();
 		
 		std::string line;
 		while (std::getline(request, line)) {
@@ -598,10 +633,10 @@ void handle_request(ssize_t & ret, char * buffer, bool & closed) {
 
 		}
 	} else if (ret == 0) {
-		std::cout << "Client closed connection. Terminating connection.\n" << a_bunch_of_dashes << std::endl;
+		BOOST_LOG_TRIVIAL(info) << "Client closed connection. Terminating connection.\n" << separator;
 		closed = true;
 	} else {
-		std::cout << "We had an invalid request.\n" << a_bunch_of_dashes << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "We had an invalid request.\n" << separator;
 	}
 }
 
@@ -610,12 +645,12 @@ void send_response(int new_fd, std::string message) {
 	response << "HTTP/1.0 200 OK\r\nContent-Length: " << message.size() << "\r\nContent-Type: text/html\r\n\r\n" << message;
 	int ret = send(new_fd, response.str().c_str(), response.str().length(), 0);
 	if (ret == -1) {
-		std::cout << "Failed to send." << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Failed to send.";
 		exit(EXIT_FAILURE);
 	}
 
-	std::cout << "Sent data. Length was " << ret << " bytes. Response length was supposed to be " << response.str().length() << " bytes.\n";
-	std::cout << "Response:\n" << message << std::endl;
+	BOOST_LOG_TRIVIAL(info) << "Sent response. Length was " << ret << " bytes. Length was supposed to be " << response.str().length() << " bytes.";
+	BOOST_LOG_TRIVIAL(debug) << "Response:\n" << message;
 }
 
 void cleanup(int & new_fd, int & sockfd, struct addrinfo * res) {
@@ -627,11 +662,11 @@ void cleanup(int & new_fd, int & sockfd, struct addrinfo * res) {
 int instantiate_connection(int & sock_fd) {
 	struct sockaddr_storage their_addr;
 	if (listen(sock_fd, BACKLOG) == -1) {
-		std::cout << "Failed to listen." << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Failed to listen.";
 		return 1;
 	}
 
-	std::cout << "Listening for connection.\n";
+	BOOST_LOG_TRIVIAL(info) << "Listening for connection.";
 
 	// now accept an incoming connection:
 
@@ -639,11 +674,11 @@ int instantiate_connection(int & sock_fd) {
 	int new_fd = accept(sock_fd, (struct sockaddr *)&their_addr, &addr_size);
 
 	if (new_fd == -1) {
-		std::cout << "Failed to accept." << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Failed to accept.";
 		return -1;
 	}
 
-	std::cout << "Accepting. Closing connection to listening socket.\n";
+	BOOST_LOG_TRIVIAL(info) << "Accepting. Closing connection to listening socket.";
 
 	return new_fd;
 }
@@ -665,20 +700,43 @@ void setup(struct addrinfo & hints, struct addrinfo * res, int & sockfd, int & n
 	sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 
 	if (bind(sockfd, res->ai_addr, res->ai_addrlen) == -1) {
-		std::cout << "Failed to bind." << std::endl;
+		BOOST_LOG_TRIVIAL(error) << "Failed to bind.";
 		exit(EXIT_FAILURE);
 	}
 
-	std::cout << "Bound.\n";
+	BOOST_LOG_TRIVIAL(info) << "Bound to socket. Service Initialized.\n" << separator;
 
 	new_fd = instantiate_connection(sockfd);
 	if (new_fd == -1) {
+		BOOST_LOG_TRIVIAL(error) << "Failed to instantiate connection. Exiting.";
 		exit(EXIT_FAILURE);
 	}
 }
 
 int main(int argc, char *argv[])
 {
+	// will use boost options
+    // for this later
+	if (argc == 1) {
+		std::cerr << usage << std::endl;
+		return 1; 
+	}
+
+	char * log_file = argv[1];
+	char * min_severity_leve1;
+	if (argc == 2) {
+		min_severity_leve1 = ""; // this defaults to info
+	} else {
+		min_severity_leve1 = argv[2];
+	}
+
+	Logger::init_logging(log_file, min_severity_leve1); 
+
+	// also the temporary means of logging
+	// we can use/write something using boost
+	// that is better than this later
+	BOOST_LOG_TRIVIAL(info) << "Starting Aisle Load Service.";
+
 	struct addrinfo hints, *res;
 	int sockfd, new_fd;
 	setup(hints, res, sockfd, new_fd);
@@ -695,7 +753,7 @@ int main(int argc, char *argv[])
 			close(new_fd);
 			new_fd = instantiate_connection(sockfd);
 			if (new_fd == -1) {
-				std::cout << "Failed to acquire file handle for accepting new connections. Cleaning up and ending this run of application." << std::endl;
+				BOOST_LOG_TRIVIAL(error) << "Failed to acquire file handle for accepting new connections. Cleaning up and ending this run of application.";
 				break; // we cannot accept new connections
 					   // so we will terminate here
 			}
