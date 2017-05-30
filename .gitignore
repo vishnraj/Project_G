@@ -2,3 +2,5 @@
 *.suo
 *.tlog
 *.log
+*.opendb
+*.out
