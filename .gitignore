@@ -6,3 +6,5 @@
 *.out
 *.vs
 *.VC.*
+*.suo
+*.db
