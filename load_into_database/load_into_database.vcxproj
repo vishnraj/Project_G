@@ -63,8 +63,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemGroup>
+    <ClCompile Include="..\AisleDatabaseCommon.cpp" />
+    <ClCompile Include="..\AisleHandlerFuncs.cpp" />
     <ClCompile Include="..\Common.cpp" />
+    <ClCompile Include="..\FactoryFunctions.cpp" />
+    <ClCompile Include="..\Handlers.cpp" />
+    <ClCompile Include="..\HttpDBService.cpp" />
+    <ClCompile Include="..\HttpServer.cpp" />
     <ClCompile Include="..\Logger.cpp" />
+    <ClCompile Include="..\ODBCTools.cpp" />
+    <ClCompile Include="..\RequestManager.cpp" />
+    <ClCompile Include="..\Requests.cpp" />
     <ClCompile Include="..\SimpleDB\BigintColumn.cpp" />
     <ClCompile Include="..\SimpleDB\BoolColumn.cpp" />
     <ClCompile Include="..\SimpleDB\Column.cpp" />
@@ -79,8 +88,17 @@
     <ClCompile Include="load_into_database.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\AisleDatabaseCommon.h" />
+    <ClInclude Include="..\AisleHandlerFuncs.h" />
     <ClInclude Include="..\Common.h" />
+    <ClInclude Include="..\FactoryFunctions.h" />
+    <ClInclude Include="..\Handlers.h" />
+    <ClInclude Include="..\HttpDBService.h" />
+    <ClInclude Include="..\HttpServer.h" />
     <ClInclude Include="..\Logger.h" />
+    <ClInclude Include="..\ODBCTools.h" />
+    <ClInclude Include="..\RequestManager.h" />
+    <ClInclude Include="..\Requests.h" />
     <ClInclude Include="..\SimpleDB\Column.h" />
     <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h" />
     <ClInclude Include="..\SimpleDB\Database.h" />

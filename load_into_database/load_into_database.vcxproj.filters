@@ -1,83 +1,148 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="load_into_database.cpp" />
+    <ClCompile Include="..\AisleDatabaseCommon.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\AisleHandlerFuncs.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FactoryFunctions.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Handlers.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HttpDBService.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HttpServer.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logger.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ODBCTools.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RequestManager.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Requests.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
     <ClCompile Include="..\SimpleDB\BigintColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\BoolColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Column.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Database.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\DoubleColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Exception.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\IntColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\LongColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Query.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\StringColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
-    <ClCompile Include="load_into_database.cpp" />
-    <ClCompile Include="..\Common.cpp" />
-    <ClCompile Include="..\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="SimpleDB">
-      <UniqueIdentifier>{b8e59b99-d9b4-4fd8-ac45-d6a5f76a85e2}</UniqueIdentifier>
+    <Filter Include="include">
+      <UniqueIdentifier>{96a29081-4d5c-42b8-8f01-5a5f465c70c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\SimpleDB">
+      <UniqueIdentifier>{55bf0402-3724-409f-887d-6cd6dabbbd94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\AisleDatabaseCommon.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\AisleHandlerFuncs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FactoryFunctions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Handlers.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HttpDBService.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HttpServer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ODBCTools.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RequestManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Requests.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="..\SimpleDB\Column.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Database.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\DatabasePimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Exception.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\macros.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Query.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\QueryPimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\ScopedTransaction.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\SimpleDB.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\sqlwrap.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common.h" />
-    <ClInclude Include="..\Logger.h" />
   </ItemGroup>
 </Project>

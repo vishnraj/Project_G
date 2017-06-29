@@ -1,3 +1,5 @@
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\Logger.cpp|636316958093015451|~/projects/ProjectGrocery/tests/test_db_connection|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\ODBCTools.cpp|636340293922633207|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\BigintColumn.cpp|636205630536383739|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\BoolColumn.cpp|636205630534772658|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Column.cpp|636205630534892734|~/projects/ProjectGrocery/tests/test_db_connection|
@@ -9,7 +11,9 @@ C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Query.cpp|636205630536263647|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ScopedTransaction.cpp|636205630536506727|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\StringColumn.cpp|636205630535353047|~/projects/ProjectGrocery/tests/test_db_connection|
-C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\test_db_connection\test_db_connection.cpp|636315033082485207|~/projects/ProjectGrocery/tests/test_db_connection|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\test_db_connection\test_db_connection.cpp|636340294571307301|~/projects/ProjectGrocery/tests/test_db_connection|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\Logger.h|636316958094682678|~/projects/ProjectGrocery/tests/test_db_connection|
+C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\ODBCTools.h|636340293042055281|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Column.h|636205630533876048|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\ColumnPimplData_i.h|636205630534412431|~/projects/ProjectGrocery/tests/test_db_connection|
 C:\Users\Vishnu_2\Documents\Visual Studio 2015\Projects\ProjectGrocery\SimpleDB\Database.h|636205630535633229|~/projects/ProjectGrocery/tests/test_db_connection|

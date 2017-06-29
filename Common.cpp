@@ -1,9 +1,7 @@
 #include "Common.h"
-#include "Logger.h"
 
 #include <sstream>
 #include <cmath>
-#include <vector>
 
 bool NaturalOrderLess::operator() (const std::string & x, const std::string & y) const {
 	// the shorter string is always considered less
@@ -86,32 +84,31 @@ bool NaturalOrderLess::operator() (const std::string & x, const std::string & y)
 	return false;
 }
 
-DatabaseInterface::DatabaseInterface(std::string & conn_str) : 
- m_max_reconnects(3), m_conn_str(conn_str) 
-{
-    if (!reconnect()) {
-    	BOOST_LOG_TRIVIAL(error) << "We are unable to connect to database. Cannot execute this query.";
-    }
-}
+std::string format_aisles_output(std::map<std::string, std::vector<std::string>, NaturalOrderLess > & aisles) {
+	std::ostringstream output;
 
-bool DatabaseInterface::reconnect() {
-	int attempts = 0;
-	while (attempts < m_max_reconnects) {
-		try {
-			m_db.reset(new SimpleDB::Database(m_conn_str));
-			return true;
+	for (std::map<std::string, std::vector<std::string> >::iterator i = aisles.begin(); i != aisles.end(); ++i) {
+		output << i->first << ": ";
+		for (std::vector<std::string>::iterator j = i->second.begin(); j != i->second.end(); ++j) {
+			output << *j << " ";
 		}
-		catch (SimpleDB::Exception & e) {
-			++attempts;
-			continue;
-		}
+		output << "\n\n";
 	}
 
-	return false;
+	return output.str();
 }
 
-bool DatabaseInterface::run_query(std::string & query) {
+std::string format_aisles_output(std::map<std::string, std::string, NaturalOrderLess> & aisles)
+{
+	std::ostringstream output;
 
+	for (auto aisle_pair : aisles) {
+		output << aisle_pair.first << ": ";
+		output << aisle_pair.second << " ";
+		output << "\n\n";
+	}
+
+	return output.str();
 }
 
 std::string url_decode(const std::string & str) {
@@ -133,18 +130,4 @@ std::string url_decode(const std::string & str) {
 		}
 	}
 	return ret;
-}
-
-std::string format_aisles_output(std::map<std::string, std::vector<std::string>, NaturalOrderLess > & aisles) {
-	std::ostringstream output;
-
-	for (std::map<std::string, std::vector<std::string> >::iterator i = aisles.begin(); i != aisles.end(); ++i) {
-		output << i->first << ": ";
-		for (std::vector<std::string>::iterator j = i->second.begin(); j != i->second.end(); ++j) {
-			output << *j << " ";
-		}
-		output << "\n\n";
-	}
-
-	return output.str();
 }

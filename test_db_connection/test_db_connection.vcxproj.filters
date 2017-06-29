@@ -3,77 +3,92 @@
   <ItemGroup>
     <ClCompile Include="test_db_connection.cpp" />
     <ClCompile Include="..\SimpleDB\BigintColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\BoolColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Column.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Database.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\DoubleColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Exception.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\IntColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\LongColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\Query.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleDB\StringColumn.cpp">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logger.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ODBCTools.cpp">
+      <Filter>include</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="SimpleDB">
+    <Filter Include="include">
+      <UniqueIdentifier>{35e04086-b79f-46bd-a169-8534a5fa8628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\SimpleDB">
       <UniqueIdentifier>{c6fff223-16de-4108-8c22-a0daa554cb6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SimpleDB\Column.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Database.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\DatabasePimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Exception.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\macros.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\Query.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\QueryPimplData_i.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\ScopedTransaction.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\SimpleDB.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
     </ClInclude>
     <ClInclude Include="..\SimpleDB\sqlwrap.h">
-      <Filter>SimpleDB</Filter>
+      <Filter>include\SimpleDB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Logger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ODBCTools.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

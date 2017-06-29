@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{f013cffb-b522-44ea-9199-b3012aab4852}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>test_new_classes</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{D51BCBC9-82E9-4017-911E-C93873C4EA2B}</LinuxProjectType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <RemoteRootDir>~/projects/ProjectGrocery/tests</RemoteRootDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <ItemGroup>
+    <ClCompile Include="..\AisleDatabaseCommon.cpp" />
+    <ClCompile Include="..\AisleHandlerFuncs.cpp" />
+    <ClCompile Include="..\Common.cpp" />
+    <ClCompile Include="..\FactoryFunctions.cpp" />
+    <ClCompile Include="..\Handlers.cpp" />
+    <ClCompile Include="..\HttpDBService.cpp" />
+    <ClCompile Include="..\HttpServer.cpp" />
+    <ClCompile Include="..\Logger.cpp" />
+    <ClCompile Include="..\ODBCTools.cpp" />
+    <ClCompile Include="..\RequestManager.cpp" />
+    <ClCompile Include="..\Requests.cpp" />
+    <ClCompile Include="..\SimpleDB\BigintColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\BoolColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Column.cpp" />
+    <ClCompile Include="..\SimpleDB\Database.cpp" />
+    <ClCompile Include="..\SimpleDB\DoubleColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Exception.cpp" />
+    <ClCompile Include="..\SimpleDB\IntColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\LongColumn.cpp" />
+    <ClCompile Include="..\SimpleDB\Query.cpp" />
+    <ClCompile Include="..\SimpleDB\ScopedTransaction.cpp" />
+    <ClCompile Include="..\SimpleDB\StringColumn.cpp" />
+    <ClCompile Include="test_new_classes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\AisleDatabaseCommon.h" />
+    <ClInclude Include="..\AisleHandlerFuncs.h" />
+    <ClInclude Include="..\Common.h" />
+    <ClInclude Include="..\FactoryFunctions.h" />
+    <ClInclude Include="..\Handlers.h" />
+    <ClInclude Include="..\HttpDBService.h" />
+    <ClInclude Include="..\HttpServer.h" />
+    <ClInclude Include="..\Logger.h" />
+    <ClInclude Include="..\ODBCTools.h" />
+    <ClInclude Include="..\RequestManager.h" />
+    <ClInclude Include="..\Requests.h" />
+    <ClInclude Include="..\SimpleDB\Column.h" />
+    <ClInclude Include="..\SimpleDB\ColumnPimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\Database.h" />
+    <ClInclude Include="..\SimpleDB\DatabasePimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\Exception.h" />
+    <ClInclude Include="..\SimpleDB\macros.h" />
+    <ClInclude Include="..\SimpleDB\Query.h" />
+    <ClInclude Include="..\SimpleDB\QueryPimplData_i.h" />
+    <ClInclude Include="..\SimpleDB\ScopedTransaction.h" />
+    <ClInclude Include="..\SimpleDB\SimpleDB.h" />
+    <ClInclude Include="..\SimpleDB\sqlwrap.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>/usr/lib64/libodbc.so;/usr/lib64/libpthread.so.0;/usr/local/lib/libboost_atomic.so;/usr/local/lib/libboost_chrono.so;/usr/local/lib/libboost_container.so;/usr/local/lib/libboost_context.so;/usr/local/lib/libboost_coroutine.so;/usr/local/lib/libboost_date_time.so;/usr/local/lib/libboost_filesystem.so;/usr/local/lib/libboost_locale.so;/usr/local/lib/libboost_math_c99f.so;/usr/local/lib/libboost_math_c99l.so;/usr/local/lib/libboost_math_c99.so;/usr/local/lib/libboost_math_tr1f.so;/usr/local/lib/libboost_math_tr1l.so;/usr/local/lib/libboost_math_tr1.so;/usr/local/lib/libboost_prg_exec_monitor.so;/usr/local/lib/libboost_program_options.so;/usr/local/lib/libboost_random.so;/usr/local/lib/libboost_regex.so;/usr/local/lib/libboost_serialization.so;/usr/local/lib/libboost_signals.so;/usr/local/lib/libboost_system.so;/usr/local/lib/libboost_thread.so;/usr/local/lib/libboost_timer.so;/usr/local/lib/libboost_unit_test_framework.so;/usr/local/lib/libboost_wave.so;/usr/local/lib/libboost_wserialization.so;/usr/local/lib/libboost_log.so;/usr/local/lib/libboost_log_setup.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
