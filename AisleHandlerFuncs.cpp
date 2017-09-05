@@ -816,6 +816,9 @@ void select_store_aisles(const std::string & query
         response = FAILED_STORE_AISLES_RETURNED;
         reset_global_aisle_data();
         return;
+    } else if (database_error) {
+        reset_global_aisle_data();
+        return;
     }
 
     std::map<std::string, std::string, NaturalOrderLess> aisles;
